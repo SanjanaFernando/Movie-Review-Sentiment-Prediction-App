@@ -82,7 +82,7 @@ uvicorn app:app --reload
 
 #### 📌 Step 1: Navigate to the Frontend Directory
 
-If your frontend is in a separate directory (e.g., `my-vite-app`), navigate to that directory:
+If your frontend is in a separate directory (e.g., `my-vite-app`), navigate to that directoryyyy:
 
 ```bash
 cd my-vite-app
@@ -112,7 +112,7 @@ npm run dev
 
 1️⃣ Open your browser and go to **`http://localhost:5173`**.  
 2️⃣ Enter a **movie review** in the text area.  
-3️⃣ Click **"Predict Sentiment"** to see the prediction and confidence level.  
+3️⃣ Click **"Predict Sentiment"** to see the prediction and confidence level.
 
 ---
 
@@ -131,4 +131,3 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ---
 
 💡 Happy Coding! 🎬✨
-

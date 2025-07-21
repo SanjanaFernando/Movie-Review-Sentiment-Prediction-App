@@ -6,7 +6,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pickle
 
 # Load trained model
-model = tf.keras.models.load_model("sentiment_model.h5")
+model = tf.keras.models.load_model("sentiment_model (1).h5")
 
 # Load tokenizer
 with open("tokenizer.pkl", "rb") as f:
@@ -33,24 +33,23 @@ async def read_root():
 
 @app.post("/predict/")
 async def predict_sentiment(request: ReviewRequest):
+    # Tokenize and pad the review
     sequence = tokenizer.texts_to_sequences([request.review])
-    padded = pad_sequences(sequence, maxlen=200)
-    prediction = model.predict(padded)[0][0]
-
-    # Convert prediction to a standard float
-    prediction_score = float(prediction)  # Convert numpy.float32 to float
-
-    # Determine sentiment and confidence level
-    if prediction_score > 0.65:
-        sentiment = "Good Movie"
-        confidence = abs(prediction_score - 0.65)  # Confidence level for good movie
-    else:
-        sentiment = "Bad Movie"
-        confidence = abs(prediction_score - 0.65)  # Confidence level for bad movie
+    padded_sequence = pad_sequences(sequence, maxlen=200)
+    
+    # Make prediction
+    prediction = model.predict(padded_sequence)
+    
+    # Determine sentiment
+    sentiment = "Good Movie" if prediction[0][0] > 0.5 else "Bad Movie"
+    
+    # Calculate confidence level
+    confidence = abs(prediction[0][0] - 0.5)  # Confidence level based on distance from 0.5
+    confidence_level = "High" if confidence > 0.05 else "Low"  # Confidence level threshold
 
     return {
         "review": request.review,
         "prediction": sentiment,
-        "score": prediction_score,  # Use the converted float here
-        "confidence": confidence
+        "score": float(prediction[0][0]),  # Convert to standard float
+        "confidence": confidence_level  # Return the confidence level as "High" or "Low"
     }
